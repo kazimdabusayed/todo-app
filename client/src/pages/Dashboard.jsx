@@ -25,6 +25,22 @@ function Dashboard() {
 		fetchTodos();
 	}, []);
 
+	// add todo
+	const addTodo = async () => {
+		if (!title.trim()) {
+			toast.warning('Todo cannot be empty');
+			return;
+		}
+
+		try {
+			await API.post('/todos', { title });
+			setTitle('');
+			fetchTodos();
+			toast.success('Todo added');
+		} catch (err) {
+			toast.error('Failed to add todo');
+		}
+	};
 
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-gray-900 via-purple-900 to-indigo-900 text-white pt-20">
@@ -45,6 +61,7 @@ function Dashboard() {
 					/>
 
 					<button
+						onClick={addTodo}
 						className="bg-indigo-500 hover:bg-indigo-600 px-6 rounded-lg"
 					>
 						Add
